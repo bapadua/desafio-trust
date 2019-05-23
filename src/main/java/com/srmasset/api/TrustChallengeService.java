@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,7 +35,9 @@ public class TrustChallengeService {
 	 * @param cep
 	 * @return
 	 */
+	@Cacheable("cepCache")
 	public Response<ResponseCepDTO> getCep(String cep) {
+		log.info("Chamada no serviço getCep");
 		Response<ResponseCepDTO> response = new Response<ResponseCepDTO>();
 		List<String> errors = new ArrayList<String>();
 
@@ -45,7 +48,7 @@ public class TrustChallengeService {
 			errors.add("O cep deve conter 8 digitos");
 		}
 
-		log.info("Call to the getCepService");
+		
 		ResponseCepDTO result = null;
 		try {
 			result = restTemplate.getForObject(apiUrl.concat(cep), ResponseCepDTO.class);
