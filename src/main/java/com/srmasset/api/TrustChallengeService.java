@@ -1,5 +1,8 @@
 package com.srmasset.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +36,15 @@ public class TrustChallengeService {
 	 */
 	public Response<ResponseCepDTO> getCep(String cep) {
 		Response<ResponseCepDTO> response = new Response<ResponseCepDTO>();
-		if (cep.length() < 8) {
-			response.getErrors().add("O cep deve conter 8 caracteres");
+		List<String> errors = new ArrayList<String>();
+
+		if (!isCepDigitsOnly(cep)) {
+			errors.add("O cep deve conter apenas números");
 		}
+		if (!hasValidLength(cep)) {
+			errors.add("O cep deve conter 8 digitos");
+		}
+
 		log.info("Call to the getCepService");
 		ResponseCepDTO result = null;
 		try {
@@ -46,8 +55,10 @@ public class TrustChallengeService {
 			log.info("Application error " + e.getMessage());
 		}
 		response.setData(result);
+		response.setErrors(errors);
 
 		return response;
+
 	}
 
 	/**
@@ -56,12 +67,18 @@ public class TrustChallengeService {
 	 * @param cep
 	 * @return
 	 */
-	public static Boolean isCepDigitsOnly(String cep) {
+	public Boolean isCepDigitsOnly(String cep) {
 		String regex = "\\d+";
 		return cep.matches(regex);
 	}
-	
-	public static Boolean hasValidLength(String cep) {
+
+	/**
+	 * Metodo para validar o tamanho do cep
+	 * 
+	 * @param cep
+	 * @return
+	 */
+	public Boolean hasValidLength(String cep) {
 		return cep.length() == 8;
 	}
 
