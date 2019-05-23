@@ -1,1 +1,8 @@
-cep-service: https://zuul.trusthub.com.br/orchestrator/v1/obter-endereco-por-cep/
+spring:
+ profiles:
+  active: dev
+  
+ datasource:
+  username: user
+  password: pass
+   
