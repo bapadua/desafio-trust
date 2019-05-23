@@ -1,4 +1,4 @@
-package com.srmasset.api;
+package com.srmasset.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,13 +26,15 @@ public class TrustChallengeService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	private final static String apiUrl = "https://zuul.trusthub.com.br/orchestrator/v1/obter-endereco-por-cep/";
+	@Value("${api-url}")
+	private String apiUrl;
 
 	private static final Logger log = LoggerFactory.getLogger(TrustChallengeService.class);
 
 	/**
-	 * Consulta no serviço externo com resultado encapsulado.
-	 * 
+	 * Consulta no serviço externo com resultado encapsulado, e usa o ehCache pra guardar a consulta em
+	 * memória, configuração fica no arquivo ehcache.xml na pasta resources.
+	 *  
 	 * @param cep
 	 * @return
 	 */
@@ -51,8 +54,8 @@ public class TrustChallengeService {
 		
 		ResponseCepDTO result = null;
 		try {
+			log.info("Chamada no serviço externo");
 			result = restTemplate.getForObject(apiUrl.concat(cep), ResponseCepDTO.class);
-			log.info(result.toString());
 		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
 			log.info("Application error " + e.getMessage());
@@ -62,6 +65,31 @@ public class TrustChallengeService {
 
 		return response;
 
+	}
+	
+	/**
+	 * Recebe uma lista de ceps e retorna uma lista de entereços
+	 * @param cepList
+	 * @return
+	 */
+	public Response<List<ResponseCepDTO>> getCepList(List<String> cepList) {
+		Response<List<ResponseCepDTO>> response = new Response<List<ResponseCepDTO>>();
+		List<ResponseCepDTO> list = new ArrayList<ResponseCepDTO>();
+		List<String> errors = new ArrayList<String>();	
+		if(cepList.isEmpty()) {
+			return null;
+		}
+		cepList.forEach(cep -> {
+			ResponseCepDTO result = new ResponseCepDTO();
+			Response<ResponseCepDTO> search = getCep(cep);
+			
+			log.info(search.getData().toString());
+		});
+		
+		response.setData(list);
+		response.setErrors(errors);
+		
+		return response;
 	}
 
 	/**

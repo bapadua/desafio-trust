@@ -9,13 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.srmasset.api.dtos.ResponseCepDTO;
 import com.srmasset.api.response.Response;
+import com.srmasset.service.TrustChallengeService;
 
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -32,7 +35,8 @@ public class TheCepApi {
 
 	private static final Logger log = LoggerFactory.getLogger(TheCepApi.class);
 
-	@ApiOperation(value = "Consulta por CEP")
+	@ApiOperation(value = "Consulta endereço por CEP")
+	@ApiImplicitParam(name = "cep", format = "String")
 	@GetMapping(value = "/{cep}")
 	public ResponseEntity<Response<ResponseCepDTO>> getCepAdress(@PathVariable("cep") String cep) {
 		Response<ResponseCepDTO> response = new Response<ResponseCepDTO>();
@@ -42,10 +46,20 @@ public class TheCepApi {
 		} catch (Exception e) {
 			return new ResponseEntity<Response<ResponseCepDTO>>(HttpStatus.BAD_REQUEST);
 		}
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok().body(response);
 	}
-	
-	public ResponseEntity<Response<List<ResponseCepDTO>>> getAddressList(@RequestBody List<String> list){
-		return null;
+
+	@ApiOperation(value = "Retorna uma lista de endereços a partir de uma lista de ceps	")
+	@PostMapping
+	public ResponseEntity<Response<List<ResponseCepDTO>>> getAddressList(@RequestBody List<String> list) {
+		Response<List<ResponseCepDTO>> response = new Response<List<ResponseCepDTO>>();
+		
+		log.info("Chamada no endpoint de lista /cep");
+		try {
+			response = trustService.getCepList(list);
+		} catch (Exception e) {
+			
+		}
+		return ResponseEntity.ok().body(null);
 	}
 }

@@ -1,8 +1,21 @@
 spring:
  profiles:
-  active: dev
+  active: ${DEV}
   
  datasource:
   username: user
   password: pass
-   
+
+management:
+ endpoints:
+ health:
+  show-details: always
+  web:
+   base-path: /health
+
+api-url: https://zuul.trusthub.com.br/orchestrator/v1/obter-endereco-por-cep/
+
+info:
+ app:
+  name: "@project.name@"
+  version: "@project.version@"
