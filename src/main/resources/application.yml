@@ -1,3 +1,6 @@
+server:
+ port: ${PORT}
+
 spring:
  profiles:
   active: dev
@@ -9,7 +12,6 @@ spring:
 management:
  security:
   enabled: false
- port: 8000
  endpoints:
  health:
   show-details: always
