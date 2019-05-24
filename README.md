@@ -14,7 +14,9 @@ Contato (11)98665-9898
  - [x] Testes Unitários
  - [x] H2 Database
  - [x] Rest
+ - [x] Cache(ehCache)
  - [x] Deploy em Nuvem(Heroku)
+ 
 
 
 **#Heroku**
