@@ -1,17 +1,20 @@
 spring:
  profiles:
-  active: ${DEV}
+  active: dev
   
  datasource:
   username: user
   password: pass
 
 management:
+ security:
+  enabled: false
+ port: 8000
  endpoints:
  health:
   show-details: always
   web:
-   base-path: /health
+   base-path: /
 
 api-url: https://zuul.trusthub.com.br/orchestrator/v1/obter-endereco-por-cep/
 
@@ -19,3 +22,30 @@ info:
  app:
   name: "@project.name@"
   version: "@project.version@"
+  
+---
+  
+spring:
+ profiles: dev
+ 
+ datasource:
+  url: jdbc:h2:mem:testdb
+  username: sa
+  password:
+  driver-class-name: org.h2.Driver
+ h2:
+  console:
+   enabled: true
+   path: /h2
+ 
+---
+
+spring:
+ profiles: prod
+
+---
+  
+spring:
+ profiles: test
+
+ 

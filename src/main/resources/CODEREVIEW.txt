@@ -1,2 +1,22 @@
 1 - 
+	A primeira coisa que notei é que os pacotes estavam fora de padrão, e o dos pojos com um s extra.
+	
+	A segunda foi o termo (POJO) que eu utilizava com JSP(saudade), com rest utilizo DTO's 
+	para a camada mais alta e entity para a definição das classes.
+	
+	A EntityFactory possui metodos não implementados, e algumas variaveis estão iniciando com a letra maiúscula
+	ela também é carregada no contexto da aplicação porém ela é instanciada no código.
+	
+	Não existem comentários explicando o contexto, os metodos.
+	
+	
+	#Bem algumas coisas como o Actuator eu pesquisei pois não utilizava aqui no trabalho, consegui implementar, e com certeza
+	foi excelente aprendizado.
+	
+	Lombok
+	DTO's,
+	H2 DB
+	SpringData
+	
+	
 	

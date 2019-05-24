@@ -53,13 +53,28 @@ public class TheCepApi {
 	@PostMapping
 	public ResponseEntity<Response<List<ResponseCepDTO>>> getAddressList(@RequestBody List<String> list) {
 		Response<List<ResponseCepDTO>> response = new Response<List<ResponseCepDTO>>();
-		
+		List<String> errors = response.getErrors();
 		log.info("Chamada no endpoint de lista /cep");
 		try {
 			response = trustService.getCepList(list);
 		} catch (Exception e) {
-			
+			errors.add(e.getMessage());
 		}
-		return ResponseEntity.ok().body(null);
+		return ResponseEntity.ok().body(response);
 	}
+	
+	@ApiOperation(value = "Retorna todos os ceps pesquisados H2")
+	@GetMapping("/all")
+	public ResponseEntity<Response<List<ResponseCepDTO>>> getAll() {
+		Response<List<ResponseCepDTO>> response = new Response<List<ResponseCepDTO>>();
+		List<String> errors = response.getErrors();
+		log.info("Chamada no endpoint de lista /all");
+		try {
+			response = trustService.getAll();
+		} catch (Exception e) {
+			errors.add(e.getMessage());
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
 }

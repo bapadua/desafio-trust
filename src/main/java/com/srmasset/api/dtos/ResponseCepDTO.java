@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseCepDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	private String cep;
 	private String estado;
 	private String cidade;
 	private String bairro;
