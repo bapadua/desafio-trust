@@ -69,6 +69,7 @@ public class TrustChallengeService {
 		try {
 			log.info("Chamada no serviço externo");
 			result = restTemplate.getForObject(apiUrl.concat(cep), ResponseCepDTO.class);
+			result.setCep(cep);
 		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
 			log.info("Application error " + e.getMessage());
