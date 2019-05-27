@@ -1,3 +1,4 @@
+https://travis-ci.org/bapadua/desafio-trust.svg?branch=master
 # Desafio Trust!
 
 Teste realizado dia 23/05 para a vaga de Java Backend Trust.
